@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { Express } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,7 +21,7 @@ async function bootstrap() {
   //Configure the swagger module here
   const config = new DocumentBuilder()
     .setTitle('Property Share Trade')
-    .setDescription('The Property Share Trade Api documentation')
+    .setDescription('The Property Share Trade Api documentation. For JSON version, visit [here](/api-json)')
     .setVersion('1.0')
     .addBearerAuth(
       // Enable Bearer Auth here
@@ -37,6 +38,13 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  // Serve Swagger JSON
+  const expressApp = app.getHttpAdapter().getInstance() as Express;
+  expressApp.get('/api-json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(document);
+  });
 
   const configService = app.get(ConfigService);
   await app.listen(configService.get<number>('port'));

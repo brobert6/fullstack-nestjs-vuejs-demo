@@ -22,7 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   const login = async (userDto) => {
     const { data } = await apiClient.post('/auth/login', userDto)
-    debugger
     delete userDto.password
     setUser(data.user)
     setToken(data.accessToken)

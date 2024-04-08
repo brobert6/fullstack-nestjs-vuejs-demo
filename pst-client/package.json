@@ -10,7 +10,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "gen:ts-webui-api": "swagger-typescript-api -p http://localhost:3003/api-json -o ./src/util -n webUiApi.ts --type-prefix WebUiApi --extract-request-params"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.19",
@@ -18,6 +19,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "axios": "^1.6.8",
     "pinia": "^2.1.7",
+    "swagger-typescript-api": "^13.0.3",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
