@@ -108,9 +108,10 @@ const handleSubmit = () => {
 
       <p class="mt-10 text-center text-sm text-gray-500">
         Not a member?
-        {{ ' ' }}
-        <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >Start a 14 day free trial</a
+        <router-link
+          :to="{ name: 'AuthRegister' }"
+          class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+          >Create your account</router-link
         >
       </p>
     </div>
