@@ -41,12 +41,6 @@ const registerUser = async (fields) => {
             id="firstName"
             validation="required"
             placeholder="First Name"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- Last Name -->
@@ -58,12 +52,6 @@ const registerUser = async (fields) => {
             id="lastName"
             validation="required"
             placeholder="Last Name"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- Phone -->
@@ -75,12 +63,6 @@ const registerUser = async (fields) => {
             id="phone"
             validation="required"
             placeholder="Phone"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- Address -->
@@ -92,12 +74,6 @@ const registerUser = async (fields) => {
             id="address"
             validation="required"
             placeholder="Address"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- City -->
@@ -109,12 +85,6 @@ const registerUser = async (fields) => {
             id="city"
             validation="required"
             placeholder="City"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- State -->
@@ -126,12 +96,6 @@ const registerUser = async (fields) => {
             id="state"
             validation="required"
             placeholder="State"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- Zip Code -->
@@ -142,12 +106,6 @@ const registerUser = async (fields) => {
             id="zipCode"
             validation="required"
             placeholder="Zip Code"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <!-- Country -->
@@ -159,12 +117,6 @@ const registerUser = async (fields) => {
             id="country"
             validation="required"
             placeholder="Country"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <FormKit
@@ -174,12 +126,6 @@ const registerUser = async (fields) => {
             id="email"
             validation="required"
             placeholder="Email address"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
 
           <FormKit
@@ -189,12 +135,6 @@ const registerUser = async (fields) => {
             id="password"
             validation="required"
             placeholder="Email address"
-            :classes="{
-              input:
-                'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
-              label: 'block text-sm font-medium leading-6 text-gray-900',
-              outer: 'mt-2'
-            }"
           />
         </FormKit>
       </div>
