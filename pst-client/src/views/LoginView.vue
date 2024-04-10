@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { mapPromiseStatusWithCallbacks } from '@/composables/useApiFetch'
 import { useAuthStore } from '@/stores/auth'
-import { useCounterStore } from '@/stores/counter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 

@@ -5,6 +5,7 @@ import Dashboard from '../views/Dashboard.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth'
+import CityEditView from '@/views/cities/CityEditView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -32,6 +33,22 @@ const router = createRouter({
           path: '/register',
           name: 'AuthRegister',
           component: RegisterView
+        }
+      ]
+    },
+    // Routes for cities management
+    {
+      path: '/cities',
+      component: DefaultLayout,
+      meta: { requiresAuth: true },
+      children: [
+        //{ path: 'list', name: 'CitiesList', component: CitiesView },
+        //{ path: 'details/:id', name: 'CityDetails', component: CityDetailsView },
+        {
+          path: ':id/edit',
+          name: 'EditCity',
+          component: CityEditView,
+          meta: { requiresAdmin: true } // Requires admin role
         }
       ]
     }

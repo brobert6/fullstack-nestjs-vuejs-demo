@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { apiClient } from '@/services/BaseService'
+import type { WebUiApiCreateUserDto, WebUiApiLoginDto } from '@/util/webUiApi'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref({
@@ -8,7 +9,7 @@ export const useAuthStore = defineStore('auth', () => {
     token: sessionStorage.getItem('TOKEN') || null
   })
 
-  const register = async (user) => {
+  const register = async (user: WebUiApiCreateUserDto) => {
     try {
       const { data } = await apiClient.post('/auth/register', user)
       setUser(data.user)
@@ -20,12 +21,14 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const login = async (userDto) => {
+  const login = async (userDto: WebUiApiLoginDto) => {
     const { data } = await apiClient.post('/auth/login', userDto)
-    delete userDto.password
+
     setUser(data.user)
     setToken(data.accessToken)
-    return data
+
+    const userData = { ...data, password: undefined }
+    return userData
   }
 
   const logout = async () => {

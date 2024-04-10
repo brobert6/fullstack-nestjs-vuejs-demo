@@ -41,7 +41,7 @@ export class CitiesService {
 
     Object.assign(city, updateCityDto);
 
-    await this.citiesRepository.save(city);
+    return await this.citiesRepository.save(city);
   }
 
   async remove(id: number) {

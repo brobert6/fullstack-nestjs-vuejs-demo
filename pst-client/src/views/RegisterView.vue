@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const registerUser = async (fields) => {
+import type { WebUiApiCreateUserDto } from '@/util/webUiApi'
+
+const registerUser = async (fields: WebUiApiCreateUserDto) => {
   await new Promise((r) => setTimeout(r, 1000))
   alert(JSON.stringify(fields))
 }
