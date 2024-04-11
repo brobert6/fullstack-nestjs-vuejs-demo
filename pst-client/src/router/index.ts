@@ -6,6 +6,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth'
 import CityEditView from '@/views/cities/CityEditView.vue'
+import CitiesView from '@/views/cities/CitiesView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -42,7 +43,7 @@ const router = createRouter({
       component: DefaultLayout,
       meta: { requiresAuth: true },
       children: [
-        //{ path: 'list', name: 'CitiesList', component: CitiesView },
+        { path: 'list', name: 'CitiesList', component: CitiesView },
         //{ path: 'details/:id', name: 'CityDetails', component: CityDetailsView },
         {
           path: ':id/edit',

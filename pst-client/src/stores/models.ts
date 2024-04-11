@@ -18,3 +18,16 @@ export interface City {
   description: string
   active: boolean
 }
+
+export interface Filters {
+  sort?: string
+  search?: string
+  status?: string[]
+}
+
+export interface WebUiApiListListParams {
+  take?: number
+  skip?: number
+  searchString?: string
+  status?: string[]
+}

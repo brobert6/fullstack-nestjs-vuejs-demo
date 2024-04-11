@@ -35,8 +35,7 @@ const updateCity = async (fields: WebUiApiUpdateCityDto) => {
     cityDetailsStore.updateCity(cityId, fields),
     isLoading,
     () => {
-      //router.push({ name: 'CitiesList' })
-      alert('redirect')
+      router.push({ name: 'CitiesList' })
     },
     (error: any) => {
       console.log(error)
