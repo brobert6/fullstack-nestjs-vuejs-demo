@@ -1,3 +1,5 @@
+import type { SortType } from 'vue3-easy-data-table'
+
 export interface FieldSchema {
   $formkit: string
   name: string
@@ -20,9 +22,12 @@ export interface City {
 }
 
 export interface Filters {
-  sort?: string
+  sortBy?: string | string[]
+  sortType?: SortType | SortType[]
   search?: string
   status?: string[]
+  rowsPerPage: number
+  page: number
 }
 
 export interface WebUiApiListListParams {

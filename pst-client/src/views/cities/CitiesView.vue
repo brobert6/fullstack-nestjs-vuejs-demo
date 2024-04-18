@@ -2,10 +2,11 @@
 import { useRouter } from 'vue-router'
 import { useStoreCities } from '../../stores/cities/storeCities'
 import { mapPromiseStatus, mapPromiseStatusWithCallbacks } from '@/composables/useApiFetch'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { reportError } from '@/util/errorReporting'
-
 import { storeToRefs } from 'pinia'
+import type { City, ID } from '@/stores/models'
+import type { Header, ServerOptions } from 'vue3-easy-data-table'
 
 const router = useRouter()
 
@@ -14,29 +15,42 @@ const isLoading = ref(false)
 const citiesStore = useStoreCities()
 const { cities, total, filters } = storeToRefs(citiesStore)
 
-const searchWords = ref(filters.value.search ? filters.value.search.split(' ') : [])
-mapPromiseStatus(citiesStore.fetchCities(), isLoading)
+const headers: Header[] = [
+  { text: 'Name', value: 'name', sortable: true },
+  { text: 'Description', value: 'description', sortable: true },
+  { text: 'Status', value: 'active', sortable: true }
+]
 
-function onFiltersUpdate(skip: number) {
-  searchWords.value = filters.value.search ? filters.value.search.split(' ') : []
-  mapPromiseStatusWithCallbacks(
-    citiesStore.fetchCities(skip),
-    isLoading,
-    () => {},
-    () => {
-      showSnackbar('ViewNews.citiesFailMsg', { type: 'error' })
-    }
-  )
+const serverOptions = ref<ServerOptions>({
+  page: 1,
+  rowsPerPage: 5,
+  sortBy: 'age',
+  sortType: 'desc'
+})
+
+const loadFromServer = () => {
+  mapPromiseStatus(citiesStore.fetchCities(), isLoading)
 }
 
-function goToDetails(id: ID) {
+const onRowClick = (item: City) => {
   router
     .push({
       name: 'EditCity',
-      params: { id: id }
+      params: { id: item.id }
     })
     .catch(reportError)
 }
+
+watch(
+  serverOptions,
+  (newServerOptions) => {
+    citiesStore.updateServerOptions(newServerOptions)
+    loadFromServer()
+  },
+  { deep: true }
+)
+
+loadFromServer()
 </script>
 
 <template>
@@ -45,33 +59,18 @@ function goToDetails(id: ID) {
       <h2 class="mt-10 text-2xl font-bold leading-9 tracking-tight text-gray-900">Cities</h2>
     </div>
     <div class="mt-10 sm:mx-auto" v-if="!isLoading">
-      <table class="table-fixed">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="city in cities" :key="city.id">
-            <td>{{ city.name }}</td>
-            <td>{{ city.description }}</td>
-            <td>{{ city.active ? 'Active' : 'Inactive' }}</td>
-            <td>
-              <button
-                @click="goToDetails(city.id)"
-                type="button"
-                class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-0.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Edit
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="pagination">Total elements: {{ total }}</p>
+      <EasyDataTable
+        :headers="headers"
+        :items="cities"
+        :loading="isLoading"
+        v-model:server-options="serverOptions"
+        @click-row="onRowClick"
+        alternating
+        multi-sort
+        show-index
+        :server-items-length="total"
+      >
+      </EasyDataTable>
     </div>
   </div>
 </template>
