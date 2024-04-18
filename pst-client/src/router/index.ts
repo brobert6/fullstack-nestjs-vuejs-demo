@@ -7,6 +7,7 @@ import RegisterView from '../views/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth'
 import CityEditView from '@/views/cities/CityEditView.vue'
 import CitiesView from '@/views/cities/CitiesView.vue'
+import TestView from '../views/TestView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -16,7 +17,10 @@ const router = createRouter({
       redirect: '/dashboard',
       component: DefaultLayout,
       meta: { requiresAuth: true },
-      children: [{ path: '/dashboard', name: 'Dashboard', component: Dashboard }]
+      children: [
+        { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+        { path: '/test', name: 'TestPage', component: TestView }
+      ]
     },
     {
       path: '/auth',

@@ -7,6 +7,7 @@ import { ref } from 'vue'
 
 import type { WebUiApiCreateCityDto } from '../../util/webUiApi'
 import { storeToRefs } from 'pinia'
+import type { City, FieldSchema } from '@/stores/models'
 
 const route = useRoute()
 const router = useRouter()
@@ -23,14 +24,14 @@ mapPromiseStatusWithCallbacks(
   cityDetailsStore.fetchCity(cityId),
   isLoading,
   () => {
-    schema.value = generateSchema<typeof WebUiApiCreateCityDto>(cityDetails.value)
+    schema.value = generateSchema<WebUiApiCreateCityDto>(cityDetails.value)
   },
   (error: any) => {
     console.log(error)
   }
 )
 
-const updateCity = async (fields: WebUiApiUpdateCityDto) => {
+const updateCity = async (fields: City) => {
   mapPromiseStatusWithCallbacks(
     cityDetailsStore.updateCity(cityId, fields),
     isLoading,

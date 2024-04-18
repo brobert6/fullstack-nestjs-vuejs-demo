@@ -171,6 +171,7 @@ const user = {
 }
 const navigation: NavigationItem[] = [
   { name: 'Cities', routeName: 'CitiesList' },
+  { name: 'Test', routeName: 'TestPage' },
   { name: 'Properties', routeName: 'Properties' }
 ]
 const userNavigation: NavigationItem[] = [
