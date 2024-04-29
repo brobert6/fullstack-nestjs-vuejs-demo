@@ -4,6 +4,7 @@ import { UpdateCityDto } from './dto/update-city.dto';
 import { Repository } from 'typeorm';
 import { City } from './entities/city.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, Pagination, paginate } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class CitiesService {
@@ -19,6 +20,12 @@ export class CitiesService {
 
   async findAll() {
     return this.citiesRepository.find();
+  }
+
+  async paginate(options: IPaginationOptions): Promise<Pagination<City>> {
+    const queryBuilder = this.citiesRepository.createQueryBuilder('c');
+    queryBuilder.orderBy('c.name', 'ASC');
+    return paginate<City>(queryBuilder, options);
   }
 
   async findOne(id: number) {
