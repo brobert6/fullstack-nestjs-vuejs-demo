@@ -31,8 +31,13 @@ export interface Filters {
 }
 
 export interface WebUiApiListListParams {
-  take?: number
-  skip?: number
+  page?: number
+  limit?: number
   searchString?: string
-  status?: string[]
+  //status?: string[]
+}
+
+export interface ListStructureSortEntity {
+  title: string
+  dir: string
 }
