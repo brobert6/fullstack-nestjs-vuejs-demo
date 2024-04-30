@@ -22,9 +22,20 @@ export class CitiesService {
     return this.citiesRepository.find();
   }
 
-  async paginate(options: IPaginationOptions): Promise<Pagination<City>> {
+  async paginate(options: IPaginationOptions, searchQuery?: string, sortBy?: string, sortOrder: 'ASC' | 'DESC' = 'ASC'): Promise<Pagination<City>> {
     const queryBuilder = this.citiesRepository.createQueryBuilder('c');
-    queryBuilder.orderBy('c.name', 'ASC');
+
+    if (searchQuery) {
+      queryBuilder.where('c.name ILIKE :searchQuery OR c.description ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` });
+    }
+
+    if (sortBy) {
+      const orderDirection = sortOrder.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+      queryBuilder.orderBy(`c.${sortBy}`, orderDirection);
+    } else {
+      queryBuilder.orderBy('c.name', 'ASC');
+    }
+
     return paginate<City>(queryBuilder, options);
   }
 
