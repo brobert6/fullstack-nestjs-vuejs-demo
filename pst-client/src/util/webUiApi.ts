@@ -177,6 +177,14 @@ export interface WebUiApiCreateAgentDto {
 
 export type WebUiApiUpdateAgentDto = object
 
+export interface WebUiApiCitiesControllerFindAllParams {
+  page: number
+  limit: number
+  searchQuery?: string
+  sortBy?: string
+  sortOrder?: string
+}
+
 export interface WebUiApiEstatesControllerFindAllParams {
   search: string
 }
@@ -477,17 +485,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       }),
 
     /**
-     * No description
+     * @description Retrieve a paginated list of cities with optional filtering and sorting
      *
      * @tags cities
      * @name CitiesControllerFindAll
+     * @summary Retrieve paginated list of cities
      * @request GET:/cities
      */
-    citiesControllerFindAll: (params: RequestParams = {}) =>
-      this.request<WebUiApiCity[], any>({
+    citiesControllerFindAll: (
+      query: WebUiApiCitiesControllerFindAllParams,
+      params: RequestParams = {}
+    ) =>
+      this.request<void, any>({
         path: `/cities`,
         method: 'GET',
-        format: 'json',
+        query: query,
         ...params
       }),
 
@@ -514,11 +526,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PATCH:/cities/{id}
      */
     citiesControllerUpdate: (id: string, data: WebUiApiUpdateCityDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<WebUiApiCity, any>({
         path: `/cities/${id}`,
         method: 'PATCH',
         body: data,
         type: ContentType.Json,
+        format: 'json',
         ...params
       }),
 

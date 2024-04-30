@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // Enable CORS
   const corsOptions: CorsOptions = {
-    origin: 'http://localhost:5174', // Replace this with your frontend app URL
+    origin: /^http:\/\/localhost:\d+$/, // Replace this with your frontend app URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,

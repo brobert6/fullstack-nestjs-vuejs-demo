@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { City, Filters, WebUiApiListListParams } from '../models'
+import type { City, Filters } from '../models'
 import { apiClient } from '@/services/BaseService'
 import { itemsPerPage } from '../constants'
 import { objToQueryParamsStr } from '@/util'
 import type { ServerOptions } from 'vue3-easy-data-table'
+import type { WebUiApiCitiesControllerFindAllParams } from '@/util/webUiApi'
 
 export const useStoreCities = defineStore('cities', () => {
   const isLoading = ref(false)
@@ -16,19 +17,20 @@ export const useStoreCities = defineStore('cities', () => {
   } as Filters)
 
   const fetchCities = async (): Promise<void> => {
-    const apiFilters: WebUiApiListListParams = {
-      take: filters.value.rowsPerPage,
-      skip: filters.value.page * filters.value.rowsPerPage,
-      //TODO: add sorting
-      ...(filters.value && { searchString: filters.value.search }),
-      ...(filters.value && { status: filters.value.status })
+    const apiFilters: WebUiApiCitiesControllerFindAllParams = {
+      limit: filters.value.rowsPerPage,
+      page: (filters.value.page - 1) * filters.value.rowsPerPage,
+      ...(filters.value.search && { searchQuery: filters.value.search }),
+      //...(filters.value && { status: filters.value.status })
+      ...(filters.value.sortBy && { sortBy: filters.value.sortBy as string }),
+      ...(filters.value.sortType && { sortOrder: filters.value.sortType as string })
     }
     const { data } = await apiClient(`/cities${objToQueryParamsStr(apiFilters)}`)
-    if (data.total) total.value = data.total
+    if (data.meta && data.meta.totalItems) total.value = data.meta.totalItems
 
     cities.value = []
 
-    data.forEach((item: City) => {
+    data.items.forEach((item: City) => {
       cities.value.push(item)
     })
   }
@@ -40,12 +42,17 @@ export const useStoreCities = defineStore('cities', () => {
     filters.value.sortType = options.sortType
   }
 
+  const updateSearch = (search: string): void => {
+    filters.value.search = search
+  }
+
   return {
     cities,
     total,
     filters,
     isLoading,
     fetchCities,
+    updateSearch,
     updateServerOptions
   }
 })
