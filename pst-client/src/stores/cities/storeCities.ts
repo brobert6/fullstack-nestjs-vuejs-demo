@@ -46,12 +46,18 @@ export const useStoreCities = defineStore('cities', () => {
     filters.value.search = search
   }
 
+  const deleteCity = async (city: City): Promise<void> => {
+    await apiClient.delete(`/cities2/${city.id}`)
+    cities.value.splice(cities.value.indexOf(city), 1)
+  }
+
   return {
     cities,
     total,
     filters,
     isLoading,
     fetchCities,
+    deleteCity,
     updateSearch,
     updateServerOptions
   }

@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { useStoreCities } from '../../stores/cities/storeCities'
-import { mapPromiseStatus } from '@/composables/useApiFetch'
+import { mapPromiseStatus, mapPromiseStatusWithCallbacks } from '@/composables/useApiFetch'
 import { ref, watch } from 'vue'
 import { reportError } from '@/util/errorReporting'
 import { storeToRefs } from 'pinia'
 import type { City } from '@/stores/models'
 import type { Header, ServerOptions } from 'vue3-easy-data-table'
+import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
+import AppConfirmationDialog from '@/components/dialogs/AppConfirmationDialog.vue'
 
 const router = useRouter()
 
 const isLoading = ref(false)
+
+const deleteCityDialogRef = ref()
 
 const citiesStore = useStoreCities()
 const { cities, total } = storeToRefs(citiesStore)
@@ -18,7 +22,8 @@ const { cities, total } = storeToRefs(citiesStore)
 const headers: Header[] = [
   { text: 'Name', value: 'name', sortable: true },
   { text: 'Description', value: 'description', sortable: true },
-  { text: 'Status', value: 'active', sortable: true }
+  { text: 'Status', value: 'active', sortable: true },
+  { text: '', value: 'operation' }
 ]
 
 const serverOptions = ref<ServerOptions>({
@@ -41,6 +46,33 @@ const onRowClick = (item: City) => {
     .catch(reportError)
 }
 
+const onDeleteClick = (item: City) => {
+  //confirm in modal dialog
+  deleteCityDialogRef.value.show({
+    item: item,
+    title: 'confirmDeleteTitle',
+    message: 'confirmDeleteMessage'
+  })
+  //citiesStore.deleteCity(item.id)
+  loadFromServer()
+}
+
+function onDeleteConfirmed(item: City): void {
+  mapPromiseStatusWithCallbacks(
+    citiesStore.deleteCity(item),
+    isLoading,
+    () => {
+      //showSnackbar('messages.deleteSuccessMsg');
+      console.log('messages.deleteSuccessMsg')
+    },
+    () => {
+      //showSnackbar('messages.deleteFailedMsg', { type: 'error' });
+      console.log('messages.deleteFailedMsg')
+      deleteCityDialogRef.value.hide()
+    }
+  )
+}
+
 const searchCities = (fields: any) => {
   citiesStore.updateSearch(fields['search'])
   loadFromServer()
@@ -59,6 +91,7 @@ loadFromServer()
 </script>
 
 <template>
+  <AppConfirmationDialog ref="deleteCityDialogRef" @confirm="onDeleteConfirmed" />
   <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-none">
       <div class="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -84,13 +117,24 @@ loadFromServer()
           :items="cities"
           :loading="isLoading"
           v-model:server-options="serverOptions"
-          @click-row="onRowClick"
           alternating
           multi-sort
           show-index
           :server-items-length="total"
           table-class-name="table-fixed"
         >
+          <template #item-operation="item">
+            <div class="flex justify-end">
+              <TrashIcon
+                class="h-4 w-4 text-red-500 hover:text-red-700 cursor-pointer mr-2"
+                @click="onDeleteClick(item)"
+              />
+              <PencilSquareIcon
+                class="h-4 w-4 text-green-500 hover:text-green-700 cursor-pointer"
+                @click="onRowClick(item)"
+              />
+            </div>
+          </template>
         </EasyDataTable>
 
         <!-- <div
@@ -205,6 +249,11 @@ loadFromServer()
     padding: 8px;
     margin: 1px 0 1px 5px;
   }
+}
+
+.operation-wrapper .operation-icon {
+  width: 20px;
+  cursor: pointer;
 }
 
 .table-fixed {
